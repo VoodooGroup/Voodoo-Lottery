@@ -197,6 +197,9 @@
     setStatus('Connect your wallet to start...');
   }
 
+  const VOODOO_MISSING_MSG =
+    'Voodoo Wallet was not detected. Install the extension, open it and sign in, then refresh this page and try again.';
+
   function connectionErrorMessage(err) {
     if (!err) return 'Something went wrong. Please try again.';
     const msg = err.message || String(err);
@@ -209,14 +212,12 @@
     }
     if (
       err.code === 'VOODOO_NOT_FOUND' ||
-      /Voodoo Wallet not detected/i.test(msg)
+      /Voodoo Wallet not detected|not detected/i.test(msg)
     ) {
-      return 'Voodoo Wallet was not detected. Install the extension, then refresh this page and try again.';
+      return VOODOO_MISSING_MSG;
     }
     if (
-      /MetaMask|no ethereum|no injected|wallet not found|not detected/i.test(
-        msg,
-      )
+      /MetaMask|no ethereum|no injected|wallet not found/i.test(msg)
     ) {
       return 'No browser wallet was found. Install MetaMask (or another wallet), then try again.';
     }
@@ -228,30 +229,20 @@
     );
   }
 
-  function connectionInstallUrl(err) {
-    if (!err) return null;
-    if (
-      err.code === 'VOODOO_NOT_FOUND' ||
-      /Voodoo Wallet not detected/i.test(err.message || '')
-    ) {
-      return (
-        err.installUrl || window.VoodooWallet?.VOODOO_INSTALL_URL || null
-      );
-    }
-    return null;
-  }
-
   async function showConnectError(title, err) {
     console.error(title, err);
     const message = connectionErrorMessage(err);
-    const linkUrl = connectionInstallUrl(err);
+    // Same popup as Plinko/Miner: title + message + OK only (no install link)
+    const dialogTitle =
+      err?.code === 'VOODOO_NOT_FOUND' ||
+      /Voodoo Wallet not detected|not detected/i.test(err?.message || '')
+        ? 'Voodoo Wallet'
+        : title || 'Voodoo Wallet';
     if (window.VoodooUI?.alert) {
       return window.VoodooUI.alert(message, {
-        title,
+        title: dialogTitle,
         type: 'error',
         okText: 'OK',
-        linkUrl: linkUrl || undefined,
-        linkText: 'Install Voodoo Wallet',
       });
     }
     setStatus(message, true);
