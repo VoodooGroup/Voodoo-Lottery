@@ -374,8 +374,7 @@ button {
 }
 
 /*
- * Ticket buttons: white fill + tier gradient border (randje).
- * Technique: gradient on outer, solid white inner via background-clip.
+ * Full metallic ticket tiles — entire button is bronze / silver / gold / diamond.
  */
 .join-btn {
   display: flex;
@@ -384,100 +383,134 @@ button {
   justify-content: center;
   gap: 6px;
   width: 100%;
-  min-height: 88px;
+  min-height: 92px;
   margin: 0;
   padding: 16px 12px;
-  color: #000000;
-  border: 3px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 12px;
-  box-shadow: none;
   text-align: center;
   line-height: 1.2;
-  background:
-    linear-gradient(#ffffff, #ffffff) padding-box,
-    var(--ticket-border, linear-gradient(135deg, #ccc, #999)) border-box;
-  background-origin: border-box;
-  background-clip: padding-box, border-box;
-  transition: filter 0.15s ease, transform 0.15s ease;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -2px 6px rgba(0, 0, 0, 0.2),
+    0 4px 14px rgba(0, 0, 0, 0.28);
+  transition: filter 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .join-btn:hover:not(:disabled) {
-  filter: brightness(0.98);
-  transform: translateY(-1px);
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.4),
+    0 8px 20px rgba(0, 0, 0, 0.35);
 }
 
 .join-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   transform: none;
+  filter: grayscale(0.25);
 }
 
 .join-btn .ticket-tier,
 .join-btn .ticket-price {
   display: block;
-  color: #000000 !important;
   background: none;
   background-image: none;
-  -webkit-text-fill-color: #000000;
 }
 
 .join-btn .ticket-tier {
-  font-size: 1.05rem;
-  font-weight: 800;
-  letter-spacing: 0.03em;
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .join-btn .ticket-price {
   font-size: 0.95rem;
-  font-weight: 600;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
 }
 
-/* Tier gradient borders */
+/* —— Bronze (full fill) —— */
 .join-btn.tier-bronze {
-  --ticket-border: linear-gradient(
-    135deg,
-    #8b4513 0%,
-    #cd7f32 35%,
-    #e8b87a 55%,
-    #a0522d 75%,
+  background: linear-gradient(
+    145deg,
+    #5c3310 0%,
+    #8b4513 18%,
+    #cd7f32 42%,
+    #f0c987 52%,
+    #b87333 68%,
     #6b3a1a 100%
   );
+  border-color: rgba(240, 201, 135, 0.45);
+}
+.join-btn.tier-bronze .ticket-tier,
+.join-btn.tier-bronze .ticket-price {
+  color: #1a0c04 !important;
+  -webkit-text-fill-color: #1a0c04 !important;
+  text-shadow: 0 1px 0 rgba(255, 230, 180, 0.35);
 }
 
+/* —— Silver (full fill) —— */
 .join-btn.tier-silver {
-  --ticket-border: linear-gradient(
-    135deg,
-    #7a7a7a 0%,
-    #c0c0c0 30%,
-    #f5f5f5 50%,
-    #a8a8a8 70%,
+  background: linear-gradient(
+    145deg,
+    #5a5a5a 0%,
+    #8e8e8e 20%,
+    #c8c8c8 40%,
+    #f7f7f7 52%,
+    #b0b0b0 72%,
     #6e6e6e 100%
   );
+  border-color: rgba(255, 255, 255, 0.5);
+}
+.join-btn.tier-silver .ticket-tier,
+.join-btn.tier-silver .ticket-price {
+  color: #1a1a1a !important;
+  -webkit-text-fill-color: #1a1a1a !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
+/* —— Gold (full fill) —— */
 .join-btn.tier-gold {
-  --ticket-border: linear-gradient(
-    135deg,
-    #8a6d00 0%,
-    #d4af37 30%,
+  background: linear-gradient(
+    145deg,
+    #5c4500 0%,
+    #a67c00 18%,
+    #d4af37 38%,
     #ffe566 50%,
-    #c9a227 70%,
+    #c9a227 68%,
     #7a5c00 100%
   );
+  border-color: rgba(255, 229, 102, 0.55);
+}
+.join-btn.tier-gold .ticket-tier,
+.join-btn.tier-gold .ticket-price {
+  color: #1f1600 !important;
+  -webkit-text-fill-color: #1f1600 !important;
+  text-shadow: 0 1px 0 rgba(255, 245, 180, 0.45);
 }
 
+/* —— Diamond (full fill) —— */
 .join-btn.tier-diamond {
-  --ticket-border: linear-gradient(
-    135deg,
-    #1a6b9a 0%,
-    #5ec8ff 30%,
-    #e8f7ff 50%,
+  background: linear-gradient(
+    145deg,
+    #0a3a5c 0%,
+    #1a6b9a 18%,
+    #5ec8ff 40%,
+    #e8f7ff 52%,
     #7dd3fc 70%,
     #0e4d75 100%
   );
+  border-color: rgba(232, 247, 255, 0.55);
+}
+.join-btn.tier-diamond .ticket-tier,
+.join-btn.tier-diamond .ticket-price {
+  color: #041820 !important;
+  -webkit-text-fill-color: #041820 !important;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 @media (max-width: 520px) {
