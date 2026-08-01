@@ -4,6 +4,6 @@
   "private": true,
   "description": "Voodoo Lottery — static PulseChain dApp",
   "scripts": {
-    "build": "echo Static site - nothing to build"
+    "build": "node -e \"console.log('static site ok')\""
   }
 }
