@@ -842,73 +842,106 @@
     }
   }
 
-  /** Pool status via public RPC so wallet stays free for the next popup */
-  async function updatePools() {
+  function formatVdo(bn) {
     try {
-      const reader = await window.VoodooContracts.withReadFailover((p) =>
-        Promise.resolve(window.VoodooContracts.readLottery(p)),
+      return (
+        Number(ethers.utils.formatUnits(bn, 18)).toLocaleString() + ' VDO'
+      );
+    } catch {
+      return '—';
+    }
+  }
+
+  function paintPoolRow(id, current, max, ticketPrice) {
+    const cur = Number(current.toString());
+    const mx = Number(max.toString());
+    const slots = Math.max(0, mx - cur);
+    const set = (elId, text) => {
+      const el = document.getElementById(elId);
+      if (el) el.textContent = text;
+    };
+    set(`current${id}`, String(cur));
+    set(`max${id}`, String(mx));
+    set(`price${id}`, formatVdo(ticketPrice));
+    set(`win${id}`, formatVdo(ticketPrice.mul(2)));
+    set(`slots${id}`, String(slots));
+  }
+
+  /**
+   * Live pool table via public PulseChain RPC — no wallet required.
+   * Visitors always see on-chain Current / slots / prices.
+   */
+  async function updatePools() {
+    const readAll = async (provider) => {
+      const lotteryRead = window.VoodooContracts.readLottery(provider);
+      const [p1, p2, p3, p4] = await Promise.all([
+        lotteryRead.getBronzeStatus(),
+        lotteryRead.getSilverStatus(),
+        lotteryRead.getGoldStatus(),
+        lotteryRead.getDiamondStatus(),
+      ]);
+      return { p1, p2, p3, p4 };
+    };
+
+    try {
+      const reader =
+        window.VoodooContracts.withReadFailoverTimed ||
+        window.VoodooContracts.withReadFailover;
+      // Whole multi-call on one RPC with failover + timeout
+      const { p1, p2, p3, p4 } = await reader(
+        (provider) => readAll(provider),
+        8000,
       );
 
-      const p1 = await reader.getBronzeStatus();
-      document.getElementById('current1').innerText = p1[0].toString();
-      document.getElementById('max1').innerText = p1[1].toString();
-      document.getElementById('price1').innerText =
-        Number(ethers.utils.formatUnits(p1[2], 18)).toLocaleString() + ' VDO';
-      document.getElementById('slots1').innerText = (p1[1] - p1[0]).toString();
-
-      const p2 = await reader.getSilverStatus();
-      document.getElementById('current2').innerText = p2[0].toString();
-      document.getElementById('max2').innerText = '2';
-      document.getElementById('price2').innerText =
-        Number(ethers.utils.formatUnits(p2[2], 18)).toLocaleString() + ' VDO';
-      document.getElementById('slots2').innerText = (
-        2 - Number(p2[0])
-      ).toString();
-
-      const p3 = await reader.getGoldStatus();
-      document.getElementById('current3').innerText = p3[0].toString();
-      document.getElementById('max3').innerText = '3';
-      document.getElementById('price3').innerText =
-        Number(ethers.utils.formatUnits(p3[2], 18)).toLocaleString() + ' VDO';
-      document.getElementById('slots3').innerText = (
-        3 - Number(p3[0])
-      ).toString();
-
-      const p4 = await reader.getDiamondStatus();
-      document.getElementById('current4').innerText = p4[0].toString();
-      document.getElementById('max4').innerText = '3';
-      document.getElementById('price4').innerText =
-        Number(ethers.utils.formatUnits(p4[2], 18)).toLocaleString() + ' VDO';
-      document.getElementById('slots4').innerText = (
-        3 - Number(p4[0])
-      ).toString();
+      paintPoolRow(1, p1[0], p1[1], p1[2]);
+      paintPoolRow(2, p2[0], p2[1], p2[2]);
+      paintPoolRow(3, p3[0], p3[1], p3[2]);
+      paintPoolRow(4, p4[0], p4[1], p4[2]);
+      return true;
     } catch (e) {
-      // Wallet-signed contract only as last resort
-      if (!lottery) {
-        console.error(e);
-        return;
-      }
+      console.warn('[pools] public RPC failed', e?.message || e);
+      // Wallet-bound contract only as last resort (visitor path has no lottery)
+      if (!lottery) return false;
       try {
-        const p1 = await lottery.getBronzeStatus();
-        document.getElementById('current1').innerText = p1[0].toString();
-        document.getElementById('max1').innerText = p1[1].toString();
-        document.getElementById('price1').innerText =
-          Number(ethers.utils.formatUnits(p1[2], 18)).toLocaleString() +
-          ' VDO';
-        document.getElementById('slots1').innerText = (
-          p1[1] - p1[0]
-        ).toString();
+        const [p1, p2, p3, p4] = await Promise.all([
+          lottery.getBronzeStatus(),
+          lottery.getSilverStatus(),
+          lottery.getGoldStatus(),
+          lottery.getDiamondStatus(),
+        ]);
+        paintPoolRow(1, p1[0], p1[1], p1[2]);
+        paintPoolRow(2, p2[0], p2[1], p2[2]);
+        paintPoolRow(3, p3[0], p3[1], p3[2]);
+        paintPoolRow(4, p4[0], p4[1], p4[2]);
+        return true;
       } catch (e2) {
-        // Never overwrite connect/tx status — table cells stay as-is
-        console.error('Error loading pools', e2);
+        console.error('[pools] wallet read failed', e2);
+        return false;
       }
     }
+  }
+
+  /** Keep table fresh for all visitors (no wallet). */
+  function startPoolAutoRefresh() {
+    // Immediate load
+    updatePools().catch((e) => console.warn(e));
+    // Refresh every 12s so buys show up without reload
+    setInterval(() => {
+      updatePools().catch(() => {});
+    }, 12_000);
+    // Refresh when tab becomes visible again
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        updatePools().catch(() => {});
+      }
+    });
   }
 
   function init() {
     bindConnectButton();
     bindVoodooWalletButton();
-    // No auto-connect — user must click Voodoo Wallet or Other
+    // Load live pool status for everyone — no connect required
+    startPoolAutoRefresh();
   }
 
   if (document.readyState === 'loading') {
