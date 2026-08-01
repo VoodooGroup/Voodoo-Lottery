@@ -7,12 +7,14 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  <link rel="stylesheet" href="css/lottery.css?v=4">
+  <link rel="stylesheet" href="css/lottery.css?v=5">
   <!-- wp_head equivalent: exact Custom scrollbar Plugin CSS -->
   <link rel="stylesheet" href="css/windows-scrollbar.css?v=1">
   <link rel="stylesheet" href="js/rainbow-bridge.css?v=2">
 </head>
 <body class="windows-scrollbar">
+  <!-- page-shell: sticky footer without breaking body scrollbar (WP model) -->
+  <div class="page-shell">
   <!-- Header: dual wallet (same as StakingPlatform-V4) -->
   <header class="header">
     <div class="logo-text">Voodoo Lottery</div>
@@ -31,9 +33,6 @@
       >Other</button>
     </div>
   </header>
-
-  <!-- RainbowKit island for "Other" -->
-  <div id="rainbowkit-root"></div>
 
   <!-- Main content -->
   <div class="main-content" id="mainContent">
@@ -118,6 +117,10 @@
       </div>
     </div>
   </footer>
+  </div><!-- /.page-shell -->
+
+  <!-- RainbowKit island for "Other" (outside shell so fixed modals stay correct) -->
+  <div id="rainbowkit-root"></div>
 
   <script src="js/config.js?v=2"></script>
   <script src="js/ui.js?v=2"></script>
