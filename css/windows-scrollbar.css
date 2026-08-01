@@ -1,0 +1,87 @@
+/*
+Plugin Name: Custom scrollbar Plugin
+Description: Here is have added the custom code for the scrollbar
+Version: 1.0
+Author: Your Name
+Scrollbar (only chrome & safari)
+Exact 1:1 WordPress plugin CSS — do not modify rules below
+*/
+
+.windows-scrollbar::-webkit-scrollbar {
+  width: 12px;
+}
+.windows-scrollbar::-webkit-scrollbar-button:end:increment,
+.windows-scrollbar::-webkit-scrollbar-button:start:decrement {
+    display: block
+}
+.windows-scrollbar::-webkit-scrollbar-button:vertical:end:decrement,
+.windows-scrollbar::-webkit-scrollbar-button:vertical:start:increment {
+    display: none
+}
+.windows-scrollbar::-webkit-scrollbar-button:vertical:increment {
+    width: 18px;
+    background: silver url(https://voodootoken.com/hovihev/uploads/2025/04/up.png) no-repeat 50%;
+    height: 18px;
+    margin: 1px 1px 1px 10px;
+    border: 1px outset #fff;
+    box-shadow: 1px 1px #000;
+}
+.windows-scrollbar::-webkit-scrollbar-button:vertical:decrement {
+    width: 11px;
+    background: silver url(https://voodootoken.com/hovihev/uploads/2025/04/down.png) no-repeat 50%;
+    height: 16px;
+    margin: 1px 1px 1px 10px;
+    border: 1px outset #fff;
+    box-shadow: 1px 1px #000
+}
+.windows-scrollbar::-webkit-scrollbar-track {
+    background-image: url(https://voodootoken.com/hovihev/uploads/2025/04/pixel-achtergrond.png);
+    background-repeat: repeat;
+    background-color: #c0c0c0
+}
+.windows-scrollbar::-webkit-scrollbar-thumb:vertical {
+    border: 1px outset #fff;
+    box-shadow: 1px 1px #000;
+    height: 40px;
+    background-color: silver
+}
+.windows-scrollbar::-webkit-scrollbar-corner:vertical {
+    background-color: #000
+}
+.windows-scrollbar::-webkit-scrollbar-button:start:decrement,
+.windows-scrollbar::-webkit-scrollbar-button:end:increment {
+    display: block
+}
+.windows-scrollbar::-webkit-scrollbar-button:horizontal:end:decrement,
+.windows-scrollbar::-webkit-scrollbar-button:horizontal:start:increment {
+    display: none
+}
+.windows-scrollbar::-webkit-scrollbar-button:horizontal:increment {
+    background: silver url(https://voodootoken.com/hovihev/uploads/2025/04/comboright.png) no-repeat 50%;
+    -webkit-transform: rotateX(-90deg);
+    transform: rotateX(-90deg);
+    -webkit-transform: rotateY(-90deg);
+    transform: rotateY(-90deg)
+}
+.windows-scrollbar::-webkit-scrollbar-button:horizontal:decrement,
+.windows-scrollbar::-webkit-scrollbar-button:horizontal:increment {
+    width: 18px;
+    height: 18px;
+    margin: 1px 1px 1px 10px;
+    border: 1px outset #fff;
+    box-shadow: 1px 1px #000
+}
+.windows-scrollbar::-webkit-scrollbar-button:horizontal:decrement {
+    background: silver url(https://voodootoken.com/hovihev/uploads/2025/04/comboleft.png) no-repeat 50%;
+    transform: rotateX(180deg);
+    -webkit-transform: rotateY(180deg)
+}
+.windows-scrollbar::-webkit-scrollbar-track-piece {
+    margin: 1px;
+}
+.windows-scrollbar::-webkit-scrollbar-thumb:horizontal {
+    border: 1px outset #fff;
+    box-shadow: 1px 1px #000;
+    height: 40px;
+    background-color: silver
+}
