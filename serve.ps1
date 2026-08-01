@@ -8,8 +8,8 @@ if (-not $node) {
   exit 1
 }
 
-if (-not (Test-Path (Join-Path $PSScriptRoot 'public\index.html'))) {
-  Write-Host "ERROR: public\index.html missing"
+if (-not (Test-Path (Join-Path $PSScriptRoot 'index.html'))) {
+  Write-Host "ERROR: index.html missing"
   exit 1
 }
 

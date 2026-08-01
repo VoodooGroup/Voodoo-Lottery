@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 
-const ROOT = path.join(__dirname, 'public');
+const ROOT = __dirname;
 const PREFERRED = 8080;
 const MAX = 8090;
 
@@ -78,7 +78,7 @@ function tryListen(port) {
 
 async function main() {
   if (!fs.existsSync(path.join(ROOT, 'index.html'))) {
-    console.error('ERROR: public/index.html not found at', ROOT);
+    console.error('ERROR: index.html not found at', ROOT);
     process.exit(1);
   }
 
