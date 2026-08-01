@@ -7,8 +7,8 @@
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-  <link rel="stylesheet" href="css/lottery.css">
-  <link rel="stylesheet" href="js/rainbow-bridge.css">
+  <link rel="stylesheet" href="css/lottery.css?v=2">
+  <link rel="stylesheet" href="js/rainbow-bridge.css?v=2">
 </head>
 <body>
   <!-- Header: dual wallet (same as StakingPlatform-V4) -->
@@ -117,17 +117,17 @@
     </div>
   </footer>
 
-  <script src="js/config.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/contracts.js"></script>
-  <script src="js/wallet.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/rainbow-bridge.js" defer></script>
+  <script src="js/config.js?v=2"></script>
+  <script src="js/ui.js?v=2"></script>
+  <script src="js/contracts.js?v=2"></script>
+  <script src="js/wallet.js?v=2"></script>
+  <script src="js/app.js?v=2"></script>
+  <script src="js/rainbow-bridge.js?v=2" defer></script>
   <script>
     window.addEventListener('load', function () {
       setTimeout(function () {
         if (!window.VoodooRainbow || !window.VoodooRainbow.ready) {
-          console.error('[Voodoo Lottery] RainbowKit not ready — check js/rainbow-bridge.js');
+          console.error('[Voodoo Lottery] RainbowKit not ready — check js/rainbow-bridge.js?v=2');
         } else {
           console.info('[Voodoo Lottery] RainbowKit ready — Other button works.');
         }
