@@ -2,5 +2,8 @@
   "name": "voodoo-lottery",
   "version": "1.0.0",
   "private": true,
-  "description": "Voodoo Lottery dApp (static)"
+  "description": "Voodoo Lottery — static PulseChain dApp",
+  "scripts": {
+    "build": "echo Static site - nothing to build"
+  }
 }

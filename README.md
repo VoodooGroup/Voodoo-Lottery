@@ -1,17 +1,17 @@
 # Voodoo Lottery
 
-PulseChain lottery dApp — dual wallet (Voodoo Wallet + Other).
+Static PulseChain lottery dApp (HTML/CSS/JS). Dual wallet: **Voodoo Wallet** + **Other**.
 
-## Live files (repo root)
+## Vercel (easy deploy)
 
-```
-index.html
-css/
-js/
-favicon.png
-```
+1. Import this repo on [vercel.com](https://vercel.com)
+2. Framework: **Other** (or leave as detected)
+3. Leave **Root / Build / Output** empty
+4. Click **Deploy**
 
-## Run locally
+Site files are at the **repo root** (`index.html`). No React/Node build.
+
+## Local
 
 ```bat
 START.bat
@@ -19,12 +19,7 @@ START.bat
 
 Or: `node server.js` → http://127.0.0.1:8080/
 
-## Deploy on Vercel
+## Contracts (PulseChain)
 
-1. Import this GitHub repo  
-2. **Framework:** Other / No Framework  
-3. **Output Directory:** leave **empty** (site is at repo root)  
-4. **Build Command:** empty  
-5. Deploy  
-
-No React, no Node app required.
+- Lottery: `0x560B17793300d5C27Dc2dFbedd09740edBB2d35b`
+- VDO: `0x1c5f8e8E84AcC71650F7a627cfA5B24B80f44f00`
