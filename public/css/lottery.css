@@ -1,0 +1,613 @@
+/* Extracted from working Voodoo Lottery HTML */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0f0f0f url('../voodoo-token-background-2.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #e0e0e0;
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.header {
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  box-sizing: border-box;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.header .logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000;
+  margin: 0;
+}
+
+/* Dual wallet buttons — same sizes/colors as StakingPlatform-V4 */
+.wallet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.wallet-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 10.5rem;
+  min-width: 10.5rem;
+  max-width: 10.5rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: 0.375rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+}
+
+.wallet-btn:disabled {
+  opacity: 0.9;
+  cursor: default;
+}
+
+.wallet-btn-voodoo {
+  background: #073749;
+}
+.wallet-btn-voodoo:hover:not(:disabled) {
+  background: #0a4a61;
+}
+
+.wallet-btn-other {
+  background: #1e40af;
+}
+.wallet-btn-other:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.wallet-btn.is-connected {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+#voodooWalletBtn,
+#connectBtn {
+  cursor: pointer;
+}
+
+/* RainbowKit mount */
+#rainbowkit-root {
+  position: fixed;
+  width: 0;
+  height: 0;
+  overflow: visible;
+  z-index: 2147483000;
+  pointer-events: none;
+}
+
+w3m-modal,
+wcm-modal,
+[data-rk] {
+  z-index: 2147483646 !important;
+}
+
+/* UI modal (ui.js) */
+body.voodoo-ui-open {
+  overflow: hidden;
+}
+
+#voodooUiModal.voodoo-ui-modal,
+.voodoo-ui-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+#voodooUiModal.hidden,
+.voodoo-ui-modal.hidden {
+  display: none !important;
+}
+
+.voodoo-ui-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.voodoo-ui-panel {
+  position: relative;
+  background: #fff;
+  color: #111;
+  border-radius: 12px;
+  padding: 1.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  text-align: center;
+}
+
+.voodoo-ui-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  background: #e5e7eb;
+}
+.voodoo-ui-icon[data-type="error"] { background: #fee2e2; color: #b91c1c; }
+.voodoo-ui-icon[data-type="success"] { background: #dcfce7; color: #15803d; }
+.voodoo-ui-icon[data-type="warning"] { background: #ffedd5; color: #c2410c; }
+.voodoo-ui-icon[data-type="info"] { background: #dbeafe; color: #1d4ed8; }
+
+.voodoo-ui-title { margin: 0 0 0.5rem; font-size: 1.15rem; }
+.voodoo-ui-message { margin: 0 0 1rem; color: #374151; white-space: pre-wrap; font-size: 0.95rem; }
+.voodoo-ui-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+.voodoo-ui-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+.voodoo-ui-btn-primary { background: #1e40af; color: #fff; }
+.voodoo-ui-btn-secondary { background: #e5e7eb; color: #111; text-decoration: none; display: inline-flex; align-items: center; }
+.voodoo-ui-btn-ghost { background: transparent; color: #4b5563; }
+
+@media (max-width: 640px) {
+  .header {
+    height: auto;
+    min-height: 60px;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .wallet-actions {
+    width: 100%;
+  }
+  .wallet-btn {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    max-width: none;
+  }
+}
+
+.main-content {
+  flex: 1 0 auto; /* push footer down like staking mt-auto */
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+h1 {
+  color: #ededed;
+}
+
+p:first-of-type {
+  color: #ededed;
+  font-size: 1.1em;
+  margin: 10px 0 20px;
+}
+
+#status {
+  margin: 20px;
+  font-size: 18px;
+  min-height: 30px;
+  color: #ededed;
+}
+
+.card {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+/* —— Buy a Ticket card —— */
+/* Frosted / glass boxes */
+.card.card-buy,
+.card.card-pools,
+.card.card-info {
+  background: rgba(20, 20, 20, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.card-info h2 {
+  margin: 0 0 1rem;
+  color: #fff;
+}
+
+/* White info tiles side by side */
+.wallet-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.wallet-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 88px;
+  padding: 14px 16px;
+  background: #000000;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.wallet-tile-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #ffffff;
+  opacity: 0.65;
+  text-align: center;
+  width: 100%;
+}
+
+.wallet-tile-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff !important;
+  word-break: break-all;
+  line-height: 1.3;
+  text-align: center;
+  width: 100%;
+}
+
+.wallet-tile-link {
+  text-decoration: none !important;
+  color: #ffffff !important;
+  border-bottom: none !important;
+  display: inline-block;
+}
+
+.wallet-tile-link:hover {
+  text-decoration: none !important;
+  opacity: 0.75;
+}
+
+.card-info .info-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 1.25rem 0;
+}
+
+.card-info .info-about {
+  margin: 0;
+  text-align: left;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+@media (max-width: 640px) {
+  .wallet-tiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card-pools h2 {
+  margin: 0 0 0.5rem;
+  color: #fff;
+}
+
+.card-buy h2 {
+  margin: 0 0 1.25rem;
+  color: #fff;
+}
+
+/* Equal ticket tiles — clean 2×2 grid, aligned labels */
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/*
+ * Ticket buttons: white fill + tier gradient border (randje).
+ * Technique: gradient on outer, solid white inner via background-clip.
+ */
+.join-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 88px;
+  margin: 0;
+  padding: 16px 12px;
+  color: #000000;
+  border: 3px solid transparent;
+  border-radius: 12px;
+  box-shadow: none;
+  text-align: center;
+  line-height: 1.2;
+  background:
+    linear-gradient(#ffffff, #ffffff) padding-box,
+    var(--ticket-border, linear-gradient(135deg, #ccc, #999)) border-box;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.join-btn:hover:not(:disabled) {
+  filter: brightness(0.98);
+  transform: translateY(-1px);
+}
+
+.join-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.join-btn .ticket-tier,
+.join-btn .ticket-price {
+  display: block;
+  color: #000000 !important;
+  background: none;
+  background-image: none;
+  -webkit-text-fill-color: #000000;
+}
+
+.join-btn .ticket-tier {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.join-btn .ticket-price {
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* Tier gradient borders */
+.join-btn.tier-bronze {
+  --ticket-border: linear-gradient(
+    135deg,
+    #8b4513 0%,
+    #cd7f32 35%,
+    #e8b87a 55%,
+    #a0522d 75%,
+    #6b3a1a 100%
+  );
+}
+
+.join-btn.tier-silver {
+  --ticket-border: linear-gradient(
+    135deg,
+    #7a7a7a 0%,
+    #c0c0c0 30%,
+    #f5f5f5 50%,
+    #a8a8a8 70%,
+    #6e6e6e 100%
+  );
+}
+
+.join-btn.tier-gold {
+  --ticket-border: linear-gradient(
+    135deg,
+    #8a6d00 0%,
+    #d4af37 30%,
+    #ffe566 50%,
+    #c9a227 70%,
+    #7a5c00 100%
+  );
+}
+
+.join-btn.tier-diamond {
+  --ticket-border: linear-gradient(
+    135deg,
+    #1a6b9a 0%,
+    #5ec8ff 30%,
+    #e8f7ff 50%,
+    #7dd3fc 70%,
+    #0e4d75 100%
+  );
+}
+
+@media (max-width: 520px) {
+  .ticket-grid {
+    grid-template-columns: 1fr;
+    max-width: 280px;
+  }
+
+  .join-btn {
+    min-height: 76px;
+    padding: 14px 12px;
+  }
+}
+
+/* Pool Status table — black / white only */
+.card-pools table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  color: #ffffff;
+  background: transparent;
+}
+
+.card-pools th,
+.card-pools td {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  background: transparent;
+}
+
+.card-pools th {
+  background: rgba(0, 0, 0, 0.45);
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.card-pools td {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.card-pools .pool-name {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+}
+
+th,
+td {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+
+th {
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+}
+
+.pool-name {
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.error-msg {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* —— Footer: same layout as StakingPlatform-V4 (bg-black py-3, flex items-center) —— */
+.site-footer {
+  background: #000;
+  color: #fff;
+  padding: 0.75rem 0; /* py-3 */
+  margin-top: auto;
+  height: auto;
+  min-height: 0;
+  display: block;
+  box-sizing: border-box;
+}
+
+.site-footer .footer-inner {
+  padding: 0 1.25rem; /* px-5 */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center; /* vertical center text + icons */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.site-footer p,
+.site-footer #footerCopyright {
+  margin: 0;
+  padding: 0;
+  font-size: 20px !important; /* staking.css */
+  line-height: 1.25;
+  color: #fff !important;
+  display: block;
+}
+
+.site-footer .footer-social {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* space-x-6 */
+  margin: 0;
+  padding: 0;
+}
+
+.site-footer .footer-social a {
+  color: #fff !important;
+  text-decoration: none !important;
+  font-size: 30px !important; /* staking.css */
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-footer .footer-social a:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .site-footer .footer-inner {
+    flex-direction: column;
+    gap: 0.75rem;
+    text-align: center;
+  }
+}
+
+.contract-link {
+  color: #e0e0e0 !important;
+  text-decoration: none !important;
+}
+
+.contract-link:hover {
+  color: #48b090 !important;
+  text-decoration: underline !important;
+}
+
+/* Make wallet info text white for better visibility on dark card */
+.card p {
+  color: white !important;
+}

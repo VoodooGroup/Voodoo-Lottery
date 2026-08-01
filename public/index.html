@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Voodoo Lottery - Join Now</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://unpkg.com/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <link rel="stylesheet" href="css/lottery.css">
+  <link rel="stylesheet" href="js/rainbow-bridge.css">
+</head>
+<body>
+  <!-- Header: dual wallet (same as StakingPlatform-V4) -->
+  <header class="header">
+    <div class="logo-text">Voodoo Lottery</div>
+    <div class="wallet-actions">
+      <button
+        type="button"
+        id="voodooWalletBtn"
+        class="wallet-btn wallet-btn-voodoo"
+        title="Connect with Voodoo Wallet browser extension"
+      >Voodoo Wallet</button>
+      <button
+        type="button"
+        id="connectBtn"
+        class="wallet-btn wallet-btn-other"
+        title="RainbowKit: WalletConnect, MetaMask, Rabby, Trust, …"
+      >Other</button>
+    </div>
+  </header>
+
+  <!-- RainbowKit island for "Other" -->
+  <div id="rainbowkit-root"></div>
+
+  <!-- Main content -->
+  <div class="main-content" id="mainContent">
+    <h1>Voodoo Lottery</h1>
+    <p>Instant Win – 5,000 / 10,000 / 25,000 / 50,000 VDO per ticket</p>
+    <div id="status">Connect your wallet to start...</div>
+    <div id="pools">
+      <div class="card card-pools">
+        <h2>Pool Status</h2>
+        <table>
+          <tr><th>Pool</th><th>Entry Fee</th><th>Winning Prize</th><th>Max Participants</th><th>Current</th><th>Open Slots</th></tr>
+          <tr><td class="pool-name">Bronze</td><td id="price1">5,000 VDO</td><td id="win1">10,000 VDO</td><td id="max1">2</td><td id="current1">0</td><td id="slots1">2</td></tr>
+          <tr><td class="pool-name">Silver</td><td id="price2">10,000 VDO</td><td id="win2">20,000 VDO</td><td id="max2">2</td><td id="current2">0</td><td id="slots2">2</td></tr>
+          <tr><td class="pool-name">Gold</td><td id="price3">25,000 VDO</td><td id="win3">50,000 VDO</td><td id="max3">3</td><td id="current3">0</td><td id="slots3">3</td></tr>
+          <tr><td class="pool-name">Diamond</td><td id="price4">50,000 VDO</td><td id="win4">100,000 VDO</td><td id="max4">3</td><td id="current4">0</td><td id="slots4">3</td></tr>
+        </table>
+      </div>
+      <div class="card card-buy">
+        <h2>Buy a Ticket</h2>
+        <div class="ticket-grid">
+          <button type="button" class="join-btn tier-bronze" data-pool="1" onclick="joinPool(1)">
+            <span class="ticket-tier">Bronze</span>
+            <span class="ticket-price">5,000 VDO</span>
+          </button>
+          <button type="button" class="join-btn tier-silver" data-pool="2" onclick="joinPool(2)">
+            <span class="ticket-tier">Silver</span>
+            <span class="ticket-price">10,000 VDO</span>
+          </button>
+          <button type="button" class="join-btn tier-gold" data-pool="3" onclick="joinPool(3)">
+            <span class="ticket-tier">Gold</span>
+            <span class="ticket-price">25,000 VDO</span>
+          </button>
+          <button type="button" class="join-btn tier-diamond" data-pool="4" onclick="joinPool(4)">
+            <span class="ticket-tier">Diamond</span>
+            <span class="ticket-price">50,000 VDO</span>
+          </button>
+        </div>
+      </div>
+      <div class="card card-info">
+        <h2>Your Wallet</h2>
+        <div class="wallet-tiles">
+          <div class="wallet-tile">
+            <span class="wallet-tile-label">Address</span>
+            <span class="wallet-tile-value" id="address">---</span>
+          </div>
+          <div class="wallet-tile">
+            <span class="wallet-tile-label">VDO Balance</span>
+            <span class="wallet-tile-value"><span id="balance">0</span> VDO</span>
+          </div>
+          <div class="wallet-tile">
+            <span class="wallet-tile-label">Contract</span>
+            <a
+              class="wallet-tile-value wallet-tile-link"
+              href="https://otter.pulsechain.com/address/0x560B17793300d5C27Dc2dFbedd09740edBB2d35b"
+              target="_blank"
+              rel="noopener noreferrer"
+            >View on explorer</a>
+          </div>
+        </div>
+        <hr class="info-divider" />
+        <p class="info-about">
+          Test your luck in the Voodoo Lottery, a decentralized lottery where you buy tickets with Voodoo tokens for a chance to double your bet. Players join one of four pools, from Bronze to Diamond, each with its own ticket price and participant limit. When a pool fills, a random winner is chosen and instantly paid double their ticket, and in the Gold and Diamond pools, the extra tokens left over from the total collected are burned, reducing the token supply. After each draw, the pool resets, and all results are fully transparent and recorded on-chain.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer (same structure & styling as StakingPlatform-V4) -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p id="footerCopyright">&copy; 2026 VoodooGroup &bull; All rights reserved</p>
+      <div class="footer-social">
+        <a href="https://x.com/Voodoo_Token/" target="_blank" rel="noopener noreferrer" class="transition" aria-label="X / Twitter">
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+        <a href="https://t.me/+oBoh-NebaWcxMDQ0" target="_blank" rel="noopener noreferrer" class="transition" aria-label="Telegram">
+          <i class="fa fa-telegram" aria-hidden="true"></i>
+        </a>
+        <a href="https://www.youtube.com/@Voodoo_Token" target="_blank" rel="noopener noreferrer" class="transition" aria-label="YouTube">
+          <i class="fa fa-youtube-play" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/contracts.js"></script>
+  <script src="js/wallet.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/rainbow-bridge.js" defer></script>
+  <script>
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (!window.VoodooRainbow || !window.VoodooRainbow.ready) {
+          console.error('[Voodoo Lottery] RainbowKit not ready — check js/rainbow-bridge.js');
+        } else {
+          console.info('[Voodoo Lottery] RainbowKit ready — Other button works.');
+        }
+      }, 2500);
+    });
+  </script>
+</body>
+</html>
